@@ -234,8 +234,32 @@ class CustomerTree:
         :param job_contains: le contenu à chercher dans le job des clients
         :return: liste de clients
         """
-        # TODO: Votre code ici
-        return None
+        found: list = []
+        others: list = []
+
+        def recursive_lookup(customer: Customer) -> None:
+            """
+            Recursive function
+            Separate matching - case sensitive - string found in job title from other
+            :param customer:
+            :return:
+            """
+
+            # checks if string is present and separate results in two lists
+            if job_contains in customer.job_title:
+                found.append(customer)
+            else:
+                others.append(customer)
+
+            # recursive call
+            for invitation in customer.invitations:
+                recursive_lookup(invitation)
+
+        # launch recursion
+        recursive_lookup(self.root)
+
+        # join the two lists
+        return found + others
 
     def linear_sort_by_class_age(self, classes: list) -> list:
         """
