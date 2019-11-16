@@ -274,16 +274,19 @@ class CustomerTree:
 
         def recursive_lookup(customer: Customer) -> None:
             """
-            Recursive function that count customers and adds ages
+            Recursive function that fills the matrix
             :param customer:
             :return: None
             """
 
-            # runs over the classes
+            # runs over the classes -> considering that the upper limit belongs to following range i.e 10-14, 15-20...
             for i in range(0, len(classes) - 1):
+
                 if classes[i] <= customer.get_age() < classes[i + 1]:
+
+                    # adds the customer to the right matrix
                     matrix[i].append(customer)
-                    break
+                    break  # breaks the loop once the condition is met
 
             # recursive call
             for invitation in customer.invitations:
