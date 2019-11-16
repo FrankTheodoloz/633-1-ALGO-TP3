@@ -87,10 +87,13 @@ class CustomerTree:
         if self.root.id == customer.id:
             self.root = None
         else:  # finds the parent Customer who invited the Customer
-            temp = self.find_parent(customer, self.root)
+            parent: Customer = self.find_parent(customer, self.root)
+
+            # gets the invitation
+            temp: Customer = self.find_child(customer, parent)
 
             # removes the customer from parent's invitations
-            temp.invitations.remove(customer)
+            parent.invitations.remove(temp)
 
     def get(self, customer: Customer) -> Customer:
         """
@@ -100,7 +103,7 @@ class CustomerTree:
         """
 
         # if it is the root
-        if self.root == customer:
+        if self.root.id == customer.id:
             return self.root
         else:  # look for the customer deeper
             return self.find_child(customer, self.root)
@@ -115,10 +118,13 @@ class CustomerTree:
         # looks for the parent customer who invited
         parent: Customer = self.find_parent(who, where)
 
-        # runs over the invitations of the parent
-        for invitation in parent.invitations:
-            if invitation.id == who.id:
-                return invitation
+        if parent is not None:
+            # runs over the invitations of the parent
+            for invitation in parent.invitations:
+                if invitation.id == who.id:
+                    return invitation
+        else:
+            print('Erreur : le client', who.id, 'n\'a pas été trouvé')
 
     def find_parent(self, who: Customer, where: Customer) -> Customer:
         """
@@ -128,15 +134,16 @@ class CustomerTree:
         :return: Customer: le parent contenant le client
         """
 
-        # runs over the invitations
+        # runs over all the invitations first, no need to go deeper if it is here...
         for invitation in where.invitations:
-
             # return parent (where) when the customer is found in the invitations
             if invitation.id == who.id:
                 return where
-            else:  # looks for the customer deeper, recursive call
-                temp: Customer = self.find_parent(who, invitation)
-            return temp
+
+        # now, go deeper...
+        for invitation in where.invitations:
+            temp = self.find_parent(who, invitation)
+            if temp is not None: return temp
 
     def get_average_age(self) -> float:
         """
@@ -283,7 +290,6 @@ class CustomerTree:
             for i in range(0, len(classes) - 1):
 
                 if classes[i] <= customer.get_age() < classes[i + 1]:
-
                     # adds the customer to the right matrix
                     matrix[i].append(customer)
                     break  # breaks the loop once the condition is met
