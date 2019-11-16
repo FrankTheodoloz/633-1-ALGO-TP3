@@ -13,13 +13,15 @@ class Customer:
         self.job_title = job_title
         self.invitations = []
 
+    def get_id(self) -> int: return self.id
+
     def add_invitation(self, invitation) -> None:
         """
         Ajoute un client à la liste des clients invités
         :param invitation: un client
         """
-        # TODO: Ajouter un client à la liste d'invitations
-        pass
+
+        self.invitations.append(invitation)
 
     def get_age(self) -> int:
         """
@@ -27,5 +29,11 @@ class Customer:
         :return: int qui correspond à l'âge de la personne
         """
 
-        # TODO: Comparer la date de naissance et la date d'aujourd'hui pour connaître l'âge de la personne
-        return -1
+        today = datetime.date.today()
+
+        # when the month and day are in future, remove 1
+        return today.year - self.date_birth().year - (
+                (today.month, today.day) < (self.date_birth().month, self.date_birth().day))
+
+    def __str__(self) -> str:
+        return "Customer {0} {1}\r".format(self.first_name, self.last_name)
