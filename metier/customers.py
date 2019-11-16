@@ -256,7 +256,7 @@ class CustomerTree:
             """
 
             # runs over the classes
-            for i in range(0, len(classes)-1):
+            for i in range(0, len(classes) - 1):
                 if classes[i] <= customer.get_age() < classes[i + 1]:
                     matrix[i].append(customer)
                     break
@@ -307,7 +307,7 @@ class CustomerTree:
 
             # invitations of customer
             for invited in customer.invitations:
-                string += (' ' + '|' * int(self.size) + '__' + invited.__str__())
+                string += ('|' * int(self.size) + '__' + invited.__str__() + '\n')
 
                 # invitations of customer invited
                 if invited.invitations:
@@ -317,7 +317,7 @@ class CustomerTree:
             return string
 
         # starting with root
-        string += (self.root.__str__())
+        string += (self.root.__str__() + '\n')
 
         # launch recursion
         if self.root.invitations:

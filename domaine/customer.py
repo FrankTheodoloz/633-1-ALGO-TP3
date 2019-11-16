@@ -36,4 +36,4 @@ class Customer:
                 (today.month, today.day) < (self.date_birth().month, self.date_birth().day))
 
     def __str__(self) -> str:
-        return "Customer {0} {1}\r".format(self.first_name, self.last_name)
+        return "Customer {0} {1}".format(self.first_name, self.last_name)
