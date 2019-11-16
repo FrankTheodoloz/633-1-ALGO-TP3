@@ -209,18 +209,18 @@ class CustomerTree:
             self.size += 1  # increase level count
 
             # invitations of customer
-            for invited in customer.invitations:
+            for invited in customer.invitations:  # 2nd level at first pass
                 if self.size == n_row:
                     customer_list.append(invited)
 
                 # invitations of customer invited
-                if invited.invitations:
+                if invited.invitations and self.size < n_row:  # no need to go deeper if already at the level !
                     find_customers_at_level(invited)
 
             self.size -= 1  # decrease level count
 
         if n_row == self.size:
-            customer_list.append(self.root)
+            customer_list.append(self.root)  # 1st level
             return customer_list
 
         find_customers_at_level(self.root)
